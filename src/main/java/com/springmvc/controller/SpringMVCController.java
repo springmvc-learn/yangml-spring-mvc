@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 
  * @author yangml
- * springMVC 绑定数据
+ * springMVC 缁戝畾鏁版嵁
  *
  */
 @Controller
 public class SpringMVCController {
 
 	/**
-	 * 基本数据类型
+	 * 鍩烘湰鏁版嵁绫诲瀷
 	 * http://localhost/baseDataType.do?age=ww
 	 * http://localhost/baseDataType.do?age=111
 	 * http://localhost/baseDataType.do
