@@ -1,20 +1,28 @@
 package com.springmvc.controller;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.springmvc.object.Admin;
 import com.springmvc.object.User;
 import com.springmvc.object.UserListForm;
@@ -29,6 +37,21 @@ import com.springmvc.object.UserSetForm;
  */
 @Controller
 public class SpringMVCController {
+    public  <T> String transfer2JsonString(T value) {
+        ObjectMapper mapper = new ObjectMapper();
+        StringWriter sw = new StringWriter();
+        JsonGenerator gen;
+        try {
+            gen = new JsonFactory().createJsonGenerator(sw);
+            mapper.writeValue(gen, value);
+            gen.close();
+        } catch (IOException e) {
+           // ExceptionUtil.caught(e, "value=[" + value + "]");
+
+        }
+
+        return sw.toString();
+    }
 
 	/**
 	 * 基本数据类型
@@ -40,8 +63,8 @@ public class SpringMVCController {
 	 */
 	@RequestMapping(value = "baseDataType.do")
 	@ResponseBody
-    public String baseDataType(int age){
-        return "age:"+age;
+    public String baseDataType(int age,@RequestHeader("User-Agent") String userAgent,ServletRequest request){
+        return "age:"+age + "userAgent:"+userAgent + "  request:"+transfer2JsonString(request);
     }
 	
 	/**
